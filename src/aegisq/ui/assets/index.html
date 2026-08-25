@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>AegisQ — noise-resilient quantum layers</title>
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>⚛</text></svg>">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead-top">
+      <div>
+        <h1><span>AegisQ</span> — noise-resilient quantum layers for PyTorch + PennyLane</h1>
+        <p>Panels run on this machine. Each one prints its equivalent terminal command.</p>
+      </div>
+      <div class="styles">
+        <span class="styles-label">Style</span>
+        <div class="styles-row" id="style-switcher" role="group" aria-label="Design direction"></div>
+      </div>
+    </div>
+    <div class="env-line" id="env"></div>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="panels">
+
+  <!-- ------------------------------------------------------------- ZNE -->
+  <section class="panel" id="panel-zne">
+    <div class="panel-head">
+      <div class="panel-head-main">
+        <h2>Zero-noise extrapolation</h2>
+        <p class="lede">
+          <span class="mono">⟨Z₀⟩</span> measured at each fold factor
+          (<span class="mono">U → U U<sup>†</sup> U</span>), with three models extrapolated to
+          λ&nbsp;=&nbsp;0. Dashed line is the noiseless value at the same weights. Points and
+          estimates are mean ± s.d. over independent random inputs — error bars, not one draw.
+        </p>
+      </div>
+      <button class="copy-command" id="zne-copy" disabled>
+        <span class="glyph">⧉</span><span class="label">Copy</span>
+      </button>
+    </div>
+    <div class="controls" id="zne-controls"></div>
+    <div class="panel-body">
+      <div class="stat-row" id="zne-stats"></div>
+      <div class="chart" id="zne-chart"></div>
+      <div class="legend" id="zne-legend"></div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------- plateau -->
+  <section class="panel" id="panel-plateau">
+    <div class="panel-head">
+      <div class="panel-head-main">
+        <h2>Gradient variance vs register width</h2>
+        <p class="lede">
+          Mean per-parameter gradient variance over random initialisations, log axis. Averaged
+          across all circuit angles: rotations that commute through the measurement have a zero
+          derivative regardless of width, and pinning one would distort the trend.
+        </p>
+      </div>
+      <button class="copy-command" id="plateau-copy" disabled>
+        <span class="glyph">⧉</span><span class="label">Copy</span>
+      </button>
+    </div>
+    <div class="controls" id="plateau-controls"></div>
+    <div class="panel-body">
+      <div class="chart" id="plateau-chart"></div>
+      <div class="legend" id="plateau-legend"></div>
+      <div class="table-scroll"><table id="plateau-table"></table></div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------ noise sweep -->
+  <section class="panel" id="panel-sweep">
+    <div class="panel-head">
+      <div class="panel-head-main">
+        <h2>Signal retained under noise</h2>
+        <p class="lede">
+          Least-squares contraction factor <span class="mono">f</span> in
+          <span class="mono">E<sub>noisy</sub> ≈ f · E<sub>ideal</sub></span>, at matched weights.
+          1.0 is unaffected, 0.0 is fully depolarised. Scale-free, so ansaetze with small
+          expectation values are not flattered. Mean ± s.d. over independent random-input trials.
+        </p>
+      </div>
+      <button class="copy-command" id="sweep-copy" disabled>
+        <span class="glyph">⧉</span><span class="label">Copy</span>
+      </button>
+    </div>
+    <div class="controls" id="sweep-controls"></div>
+    <div class="panel-body">
+      <div class="chart" id="sweep-chart"></div>
+      <div class="legend" id="sweep-legend"></div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------- symmetry -->
+  <section class="panel" id="panel-symmetry">
+    <div class="panel-head">
+      <div class="panel-head-main">
+        <h2>Symmetry verification</h2>
+        <p class="lede">
+          Particle-conserving circuit: gates preserve Hamming weight, so probability outside the
+          sector is noise. Post-selection needs a full-distribution measurement rather than extra
+          circuit runs; acceptance rate sets the shot overhead.
+        </p>
+      </div>
+      <button class="copy-command" id="symmetry-copy" disabled>
+        <span class="glyph">⧉</span><span class="label">Copy</span>
+      </button>
+    </div>
+    <div class="controls" id="symmetry-controls"></div>
+    <div class="panel-body">
+      <div class="stat-row" id="symmetry-stats"></div>
+      <div class="split">
+        <div>
+          <div class="chart" id="symmetry-chart"></div>
+          <div class="legend" id="symmetry-legend"></div>
+        </div>
+        <div>
+          <div class="chart" id="symmetry-bars"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------- training -->
+  <section class="panel" id="panel-train">
+    <div class="panel-head">
+      <div class="panel-head-main">
+        <h2>Training under a noise model</h2>
+        <p class="lede">
+          <span class="mono">QuantumLayer</span> in <span class="mono">nn.Sequential</span>,
+          Adam, streamed per epoch. Epoch 0 is untrained.
+        </p>
+      </div>
+      <button class="copy-command" id="train-copy" disabled>
+        <span class="glyph">⧉</span><span class="label">Copy</span>
+      </button>
+    </div>
+    <div class="controls" id="train-controls"></div>
+    <div class="panel-body">
+      <div class="stat-row" id="train-stats"></div>
+      <div class="chart" id="train-chart"></div>
+      <div class="legend" id="train-legend"></div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------------- catalog -->
+  <section class="panel" id="panel-catalog">
+    <div class="panel-head">
+      <div class="panel-head-main">
+        <h2>Layer catalog and circuit cost</h2>
+        <p class="lede">
+          Per layer at the chosen width. Depth counts parallel two-qubit cycles; brickwork
+          ansaetze stay at 2 per layer for any register size.
+        </p>
+      </div>
+    </div>
+    <div class="controls" id="catalog-controls"></div>
+    <div class="panel-body">
+      <div class="table-scroll"><table id="catalog-table"></table></div>
+      <div class="chart" id="catalog-chart" style="margin-top:18px"></div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------- caveats -->
+  <section class="panel" id="panel-caveats">
+    <div class="panel-head">
+      <div class="panel-head-main">
+        <h2>Known limits</h2>
+      </div>
+    </div>
+    <div class="panel-body">
+      <ul class="limits">
+        <li>
+          <span class="mono">LocalEntangler</span>'s default CZ entangler is diagonal, so a
+          <span class="mono">local_z</span> read-out cannot fit globally correlated targets. On
+          4-qubit parity it reaches 0.569; <span class="mono">entangler="cnot"</span> or
+          <span class="mono">measurement="global_z"</span> reaches 1.000
+          (<span class="mono">run.py choose-ansatz</span>).
+        </li>
+        <li>
+          <span class="mono">PermutationEquivariant</span> holds gradient variance at any width but
+          has 3 parameters per layer; it scores 0.71–0.76 on two_moons against 0.94–0.97 for the
+          baselines.
+        </li>
+        <li>
+          Extrapolation degrades above roughly <span class="mono">p = 0.03</span> and can overshoot.
+          Five closely spaced scale factors cost 129× the sampling variance of two.
+        </li>
+        <li>
+          Density-matrix simulation is <span class="mono">4<sup>n</sup></span> in memory: about
+          10–12 qubits here, fewer with <span class="mono">measurement="probs"</span>.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</div><!-- /.panels -->
+
+  <footer class="foot">
+    <code>python3 run.py serve</code> · Apache-2.0
+  </footer>
+</main>
+
+<script type="module" src="/assets/app.js"></script>
+</body>
+</html>
