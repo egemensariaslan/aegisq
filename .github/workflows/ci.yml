@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: test (py${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install the project
+        run: uv sync --extra dev
+
+      - name: Run the test suite
+        run: uv run --extra dev pytest -q
+
+      - name: Verify the console entry point
+        run: uv run aegisq --version
+
+      - name: Build the wheel
+        run: uv build --wheel
+
+      - name: Verify the wheel installs standalone
+        run: |
+          uv venv /tmp/wheel-check
+          uv pip install --python /tmp/wheel-check/bin/python --no-deps dist/*.whl
+          uv pip install --python /tmp/wheel-check/bin/python pennylane torch numpy
+          /tmp/wheel-check/bin/python -c "import aegisq; print(aegisq.__version__)"
+          /tmp/wheel-check/bin/aegisq --version
+
+  launcher:
+    name: zero-prerequisite launcher (fresh clone)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: python3 run.py --version, with no environment pre-built
+        run: python3 run.py --version
+      - name: python3 run.py info (second run reuses the environment)
+        run: python3 run.py info
