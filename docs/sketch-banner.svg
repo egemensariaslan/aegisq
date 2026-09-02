@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 320" width="1180" height="320">
+  <title>AegisQ</title>
+  <desc>AegisQ, noise-resilient quantum layers for PyTorch and PennyLane. A measured expectation value decays as simulated hardware noise is folded in from the left; a dashed extrapolation carries it back to the exact zero-noise value on the right, the same operation the library performs on real circuits.</desc>
+  <style>
+    .bg    { fill: #FDFCFA }
+    .ink   { fill: #16161A; stroke: #16161A }
+    .muted { fill: #454B59; stroke: #454B59 }
+    .faint { fill: #646A78; stroke: #646A78 }
+    .s     { stroke: #16161A; stroke-width: 2.1; fill: none;
+             stroke-linecap: round; stroke-linejoin: round }
+    .thin  { stroke: #4A5060; stroke-width: 1.4; fill: none; stroke-linecap: round }
+    .dash  { stroke: #6E7481; stroke-width: 1.8; fill: none;
+             stroke-linecap: round; stroke-dasharray: 8 6 }
+    .h-blue   { stroke: #3f80c4 }
+    .h-red    { stroke: #cd6257 }
+    .h-green  { stroke: #3f9963 }
+    .h-amber  { stroke: #b38f1e }
+    [class^="h-"] { stroke-width: 1.9; fill: none; stroke-linecap: round }
+
+    @media (prefers-color-scheme: dark) {
+      .bg    { fill: #0E1117 }
+      .ink   { fill: #F2F4F8; stroke: #F2F4F8 }
+      .muted { fill: #C2C8D4; stroke: #C2C8D4 }
+      .faint { fill: #8A93A6; stroke: #8A93A6 }
+      .s     { stroke: #F2F4F8 }
+      .thin  { stroke: #9AA2B4 }
+      .dash  { stroke: #9AA2B4 }
+      .h-blue   { stroke: #6ea8fe }
+      .h-red    { stroke: #ff9d94 }
+      .h-green  { stroke: #6ed69a }
+      .h-amber  { stroke: #e0b84d }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1180" height="320"/>
+
+  <!-- title block -->
+  <text x="48" y="86" class="ink" font-family="Georgia, 'Iowan Old Style', serif" font-size="54" font-weight="700">AegisQ</text>
+  <text x="48" y="118" class="muted" font-family="Helvetica, Arial, sans-serif" font-size="17">Noise-resilient quantum layers for PyTorch and PennyLane</text>
+
+  <!-- axis -->
+  <line class="thin" x1="48" y1="270" x2="1132" y2="270"/>
+  <line class="thin" x1="48" y1="150" x2="48" y2="270"/>
+  <text x="34" y="156" class="faint" font-family="ui-monospace, monospace" font-size="12" text-anchor="end">+0.6</text>
+  <text x="34" y="274" class="faint" font-family="ui-monospace, monospace" font-size="12" text-anchor="end">0</text>
+
+  <!-- noiseless reference -->
+  <line class="dash" x1="48" y1="176" x2="1132" y2="176"/>
+  <text x="1132" y="170" class="faint" font-family="ui-monospace, monospace" font-size="12" text-anchor="end">noiseless</text>
+
+  <!-- measured decay: expectation value folds toward zero as noise scale grows -->
+  <path class="s h-blue" d="M 160 176 C 300 176, 340 210, 430 232 C 520 252, 560 258, 620 260"/>
+  <circle class="h-blue" cx="160" cy="176" r="5" fill="#3f80c4"/>
+  <circle class="h-blue" cx="430" cy="232" r="5" fill="#3f80c4"/>
+  <circle class="h-blue" cx="620" cy="260" r="5" fill="#3f80c4"/>
+  <text x="160" y="292" class="faint" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle">&#955;=1</text>
+  <text x="430" y="292" class="faint" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle">&#955;=2</text>
+  <text x="620" y="292" class="faint" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle">&#955;=3</text>
+
+  <!-- extrapolation back to the zero-noise limit -->
+  <path class="dash h-green" d="M 620 260 C 700 236, 780 196, 850 178"/>
+  <circle cx="850" cy="178" r="6" fill="none" class="h-green" stroke-width="2.4"/>
+
+  <!-- recovered estimate label -->
+  <line class="thin" x1="850" y1="178" x2="850" y2="270"/>
+  <text x="850" y="292" class="faint" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle">&#955;=0</text>
+  <text x="900" y="150" class="h-green" font-family="ui-monospace, monospace" font-size="13" font-weight="600">extrapolated</text>
+
+  <!-- residual noise scatter under the measured curve, thinning toward zero -->
+  <g class="h-red" stroke-width="1.4" opacity="0.75">
+    <line x1="200" y1="196" x2="204" y2="204"/>
+    <line x1="240" y1="204" x2="246" y2="196"/>
+    <line x1="290" y1="212" x2="296" y2="220"/>
+    <line x1="350" y1="224" x2="356" y2="216"/>
+    <line x1="400" y1="228" x2="406" y2="236"/>
+    <line x1="470" y1="240" x2="476" y2="232"/>
+    <line x1="540" y1="248" x2="546" y2="256"/>
+  </g>
+
+  <text x="48" y="312" class="faint" font-family="Helvetica, Arial, sans-serif" font-size="12">measured under simulated hardware noise, then extrapolated to &#955;=0 &#8212; the operation this library performs</text>
+</svg>
